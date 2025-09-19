@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WHA-USDT Swap Hub</title>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000000;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header img {
+            width: 150px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            color: #92b4ec;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: #2e2e4a;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+        }
+        .button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #connectWallet {
+            padding: 12px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #6a0dad;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        #connectWallet:hover {
+            background-color: #8c2ee8;
+        }
+        .card {
+            background-color: #3b3b5b;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .card h2 {
+            margin-top: 0;
+            color: #d8c2ff;
+        }
+        .balance-info p {
+            margin: 5px 0;
+        }
+        .flex-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #5a5a7d;
+            background-color: #2e2e4a;
+            color: #e0e0e0;
+            font-size: 16px;
+        }
+        .input-label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            background-color: #6a0dad;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover:not(:disabled) {
+            background-color: #8c2ee8;
+        }
+        .btn:disabled {
+            background-color: #555577;
+            cursor: not-allowed;
+        }
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .notification {
+            background-color: #4a4a6e;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            opacity: 0.95;
+            animation: fadein 0.5s, fadeout 0.5s 4.5s;
+        }
+        @keyframes fadein {
+            from { opacity: 0; }
+            to   { opacity: 0.95; }
+        }
+        @keyframes fadeout {
+            from { opacity: 0.95; }
+            to   { opacity: 0; }
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="logo.jpg" alt="Water Ha Token Logo">
+        <h1>WHA-USDT Swap Hub</h1>
+        <button id="connectWallet">Connect Wallet</button>
+    </div>
+
+    <div class="container hidden" id="walletInfoSection">
+        <div class="card">
+            <h2>Wallet Information</h2>
+            <div class="balance-info">
+                <p><strong>Address:</strong> <span id="walletAddress"></span></p>
+                <p><strong>BNB Balance:</strong> <span id="bnbBalance"></span></p>
+                <p><strong>USDT Balance:</strong> <span id="usdtBalance"></span></p>
+                <p><strong>WHA Balance:</strong> <span id="whaBalance"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container hidden" id="sellSection">
+        <div class="card">
+            <h2>Sell WHA Tokens</h2>
+            <p>Enter the amount of WHA you want to sell to the exchange. Use Binance Smart Chain</p>
+            <div class="flex-row">
+                <div style="width: 100%;">
+                    <div class="input-label">WHA Amount</div>
+                    <input type="number" id="whaAmount" placeholder="Enter WHA amount">
+                </div>
+            </div>
+            <p>You will receive: <span id="usdtReceive">0</span> USDT</p>
+
+            <button class="btn" id="approveWHA" disabled>Approve WHA</button>
+            <button class="btn" id="sellTokens" disabled>Sell Tokens</button>
+        </div>
+    </div>
+
+    <div class="notification-container" id="notifications"></div>
+
+    <script src="exchange.js"></script>
+</body>
+</html>
